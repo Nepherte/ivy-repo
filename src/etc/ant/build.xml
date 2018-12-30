@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<project
+    name="Ivy Repo" default="install" basedir="../../../"
+    xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <property file="src/etc/ant/build.properties"/>
+  <property file="src/etc/ant/build.deps.properties"/>
+
+  <!-- Location for additional Ant libraries -->
+  <property name="ant.lib.dir" value="${user.home}/.ant/lib/ivy-repo"/>
+
+  <!-- Loads ivy into ant -->
+  <target name="init">
+    <mkdir dir="${ant.lib.dir}"/>
+
+    <get src="${jcraft-jsch}" dest="${ant.lib.dir}" usetimestamp="true"/>
+    <get src="${apache-ivy}" dest="${ant.lib.dir}" usetimestamp="true"/>
+
+    <path id="ivy.lib.path">
+      <fileset dir="${ant.lib.dir}" includes="*.jar"/>
+    </path>
+
+    <taskdef
+        resource="org/apache/ivy/ant/antlib.xml"
+        uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+  </target>
+
+  <!-- Configures ivy settings -->
+  <target name="configure" depends="init">
+    <ivy:configure file="${ivy.settings.file}"/>
+  </target>
+
+  <!-- Asks for artifact details -->
+  <target name="input">
+    <input message="Organisation:" addproperty="organisation"/>
+    <input message="Module: " addproperty="module"/>
+    <input message="Revision: " addproperty="revision"/>
+  </target>
+
+  <!-- Resolves package dependencies -->
+  <target name="resolve" depends="configure,input">
+    <ivy:resolve
+        inline="true" organisation="${organisation}"
+        module="${module}" revision="${revision}"/>
+  </target>
+
+  <!-- Install package into staging repo -->
+  <target name="install" depends="configure,input">
+    <ivy:install
+        from="packager" to="staging" organisation="${organisation}"
+        module="${module}" revision="${revision}" overwrite="true"/>
+  </target>
+
+  <!-- Installs package into production repo -->
+  <target name="publish" depends="configure,input">
+    <ivy:install
+        from="packager" to="production" organisation="${organisation}"
+        module="${module}" revision="${revision}"/>
+  </target>
+</project>
