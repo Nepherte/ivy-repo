@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ivy-module version="2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
+  xmlns:e="http://ant.apache.org/ivy/extra">
+
+  <info
+    organisation="net.bytebuddy" module="byte-buddy-agent"
+    revision="1.9.7" status="release" publication="20190110000000">
+
+    <!-- The license under which the module is published. -->
+    <license name="Apache License, Version 2.0"
+      url="https://opensource.org/licenses/Apache-2.0"/>
+
+    <!-- The writer of the module ivy file. -->
+    <ivyauthor name="Bart Verhoeven" url="https://www.nepherte.be"/>
+
+    <!-- The repo to which the module is published. -->
+    <repository name="Nepherte Ivy Repo"
+      url="https://ivy.nepherte.be"  artifacts="true" ivys="true"
+      pattern="[organisation]/[module]/[revision]/ivy.xml" />
+
+    <!-- Short description of the module. -->
+    <description homepage="https://bytebuddy.net">
+      Agent that allows access to the JVM's hot swap feature.
+    </description>
+  </info>
+
+  <configurations>
+    <conf name="release" description="Published artifacts."/>
+    <conf name="compile" description="Compile dependencies."/>
+    <conf name="runtime" description="Runtime dependencies."/>
+    <conf name="default" description="Default configuration."
+      extends="release,compile,runtime"/>
+  </configurations>
+
+  <publications defaultconf="release">
+    <artifact name="byte-buddy-agent"
+      ext="jar" type="jar"/>
+    <artifact name="byte-buddy-agent"
+      ext="jar" type="source" e:classifier="sources"/>
+    <artifact name="byte-buddy-agent"
+      ext="jar" type="javadoc" e:classifier="javadoc"/>
+  </publications>
+</ivy-module>
