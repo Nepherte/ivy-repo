@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ivy-module version="2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
+  xmlns:e="http://ant.apache.org/ivy/extra">
+
+  <info
+    organisation="org.mockito" module="mockito-core"
+    revision="2.25.0" status="release" publication="20190305000000">
+
+    <!-- The license under which the module is published. -->
+    <license name="MIT License"
+      url="https://opensource.org/licenses/MIT"/>
+
+    <!-- The writer of the module ivy file. -->
+    <ivyauthor name="Bart Verhoeven" url="https://www.nepherte.be"/>
+
+    <!-- The repo to which the module is published. -->
+    <repository name="Nepherte Ivy Repo"
+      url="https://ivy.nepherte.be"  artifacts="true" ivys="true"
+      pattern="[organisation]/[module]/[revision]/ivy.xml" />
+
+    <!-- Short description of the module. -->
+    <description homepage="http://mockito.org">
+      Mocking framework for unit tests written in Java.
+    </description>
+  </info>
+
+  <configurations>
+    <conf name="release" description="Published artifacts."/>
+    <conf name="compile" description="Compile dependencies."/>
+    <conf name="runtime" description="Runtime dependencies."/>
+    <conf name="default" description="Default configuration."
+      extends="release,compile,runtime"/>
+  </configurations>
+
+  <publications defaultconf="release">
+    <artifact name="mockito-core"
+      ext="jar" type="jar"/>
+    <artifact name="mockito-core"
+      ext="jar" type="source" e:classifier="sources"/>
+    <artifact name="mockito-core"
+      ext="jar" type="javadoc" e:classifier="javadoc"/>
+  </publications>
+
+  <dependencies defaultconf="compile,runtime"
+    defaultconfmapping="compile->release;runtime->compile,runtime">
+
+    <dependency org="net.bytebuddy" name="byte-buddy" rev="1.9.7"/>
+    <dependency org="net.bytebuddy" name="byte-buddy-agent" rev="1.9.7"/>
+    <dependency org="org.objenesis" name="objenesis" rev="2.6"/>
+  </dependencies>
+</ivy-module>
