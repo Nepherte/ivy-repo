@@ -48,12 +48,13 @@
     </filesystem>
 
     <!-- Online repository that hosts the artifacts -->
-    <sftp name="production" host="${prod.hostname}" user="${prod.username}"
-       keyFile="${prod.keyFile}" keyFilePassword="${prod.keyFilePassword}">
-      <ivy pattern=
-        "${prod.repo.pattern}/ivy.xml"/>
-      <artifact pattern=
-        "${prod.repo.pattern}/${prod.artifact.pattern}"/>
+    <sftp name="production"
+       host="${prod.hostname}" user="${prod.username}"
+       keyFile="${ivy.settings.dir}/${prod.keyFile}"
+       keyFilePassword="${prod.keyFilePassword}">
+
+      <ivy pattern="${prod.repo.pattern}/ivy.xml"/>
+      <artifact pattern="${prod.repo.pattern}/${prod.artifact.pattern}"/>
     </sftp>
   </resolvers>
 </ivysettings>

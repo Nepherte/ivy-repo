@@ -3,26 +3,34 @@
     name="Ivy Repo" default="install" basedir="../../../"
     xmlns:ivy="antlib:org.apache.ivy.ant">
 
+  <!-- Build script settings and dependencies -->
   <property file="src/etc/ant/build.properties"/>
-  <property file="src/etc/ant/build.deps.properties"/>
+  <property file="src/etc/ant/ant.properties"/>
 
   <!-- Location for additional Ant libraries -->
-  <property name="ant.lib.dir" value="${user.home}/.ant/lib/ivy-repo"/>
+  <property name="ant.lib.dir" value="${user.home}/.ant/lib"/>
 
-  <!-- Loads ivy into ant -->
-  <target name="init">
+  <target name="ant">
+    <!-- Create the Ant lib directory -->
     <mkdir dir="${ant.lib.dir}"/>
 
+    <!-- Retrieve and download dependencies -->
     <get src="${jcraft-jsch}" dest="${ant.lib.dir}" usetimestamp="true"/>
     <get src="${apache-ivy}" dest="${ant.lib.dir}" usetimestamp="true"/>
+  </target>
 
-    <path id="ivy.lib.path">
-      <fileset dir="${ant.lib.dir}" includes="*.jar"/>
-    </path>
+  <target name="init" depends="ant">
+    <!-- Load all task definitions -->
+    <taskdef resource="org/apache/ivy/ant/antlib.xml"
+      uri="antlib:org.apache.ivy.ant"/>
 
-    <taskdef
-        resource="org/apache/ivy/ant/antlib.xml"
-        uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+    <!-- Decrypt the ssh key. -->
+    <exec executable="openssl">
+      <arg value="aes-256-cbc"/><arg value="-d"/>
+      <arg value="-k"/><arg value="${ssh.key.password}"/>
+      <arg value="-in"/><arg value="${ssh.key.encrypted}"/>
+      <arg value="-out"/><arg value="${ssh.key.decrypted}"/>
+    </exec>
   </target>
 
   <!-- Configures ivy settings -->
