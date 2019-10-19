@@ -1,0 +1,17 @@
+<packager-module version="1.0">
+  <property name="name" value="${ivy.packager.module}"/>
+  <property name="revision" value="${ivy.packager.revision}"/>
+  <property name="organisation" value="${ivy.packager.organisation}"/>
+
+  <m2resource
+      groupId="${organisation}" artifactId="${name}"
+      version="${revision}" repo="https://repo1.maven.org/maven2">
+
+    <artifact tofile="artifacts/jars/${name}.jar"
+        sha1="2cd9b264f76e3d087ee21bfc99305928e1bdb443"/>
+    <artifact tofile="artifacts/sources/${name}.jar" classifier="sources"
+        sha1="6444f3c8fce32e20f621e264807256c5e65f11c9"/>
+    <artifact tofile="artifacts/javadocs/${name}.jar" classifier="javadoc"
+        sha1="e70c28747173e53d680f268d021916e684235953"/>
+  </m2resource>
+</packager-module>
