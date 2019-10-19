@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ivy-module version="2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd"
+  xmlns:e="http://ant.apache.org/ivy/extra">
+
+  <info
+    organisation="ch.qos.logback" module="logback-classic"
+    revision="1.2.3" status="release" publication="20170331000000">
+
+    <!-- The license under which the module is published. -->
+    <license name="Eclipse Public License version 2.0"
+      url="https://opensource.org/licenses/EPL-2.0"/>
+
+    <!-- The writer of the module ivy file. -->
+    <ivyauthor name="Bart Verhoeven" url="https://www.nepherte.be"/>
+
+    <!-- The repo to which the module is published. -->
+    <repository name="Nepherte Ivy Repo"
+      url="https://ivy.nepherte.be"  artifacts="true" ivys="true"
+      pattern="[organisation]/[module]/[revision]/ivy.xml" />
+
+    <!-- Short description of the module. -->
+    <description homepage="http://logback.qos.ch/">
+      Reliable, generic, fast and flexible logging framework for Java.
+    </description>
+  </info>
+
+  <configurations>
+    <conf name="release" description="Published artifacts."/>
+    <conf name="compile" description="Compile dependencies."/>
+    <conf name="runtime" description="Runtime dependencies."/>
+    <conf name="default" description="Default configuration."
+      extends="release,compile,runtime"/>
+  </configurations>
+
+  <publications defaultconf="release">
+    <artifact name="logback-classic"
+      ext="jar" type="jar"/>
+    <artifact name="logback-classic"
+      ext="jar" type="source" e:classifier="sources"/>
+    <artifact name="logback-classic"
+      ext="jar" type="javadoc" e:classifier="javadoc"/>
+  </publications>
+
+  <dependencies defaultconf="compile,runtime"
+    defaultconfmapping="compile->release;runtime->compile,runtime">
+
+    <dependency org="ch.qos.logback" name="logback-core" rev="1.2.3"/>
+    <dependency org="org.slf4j" name="slf4j-api" rev="1.7.28"/>
+  </dependencies>
+</ivy-module>
