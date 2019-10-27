@@ -57,17 +57,17 @@ are supported, but new artifacts can be added in the blink of an eye.
 #### Resolving Artifacts
 To download and build an ivy artifact, use the following command:
 
-    IvyRepo.bat resolve <organisation>:<module>:<revision>
+    ./IvyRepo.sh resolve <organisation>:<module>:<revision>
 
 #### Installing Artifacts
 To install an artifact into the staging repo, use the following command:
 
-    IvyRepo.bat install <organisation>:<module>:<revision>
+    ./IvyRepo.sh install <organisation>:<module>:<revision>
 
 #### Publishing Artifacts
 To publish an artifact into the production repo, use the following command:
 
-    IvyRepo.bat publish <organisation>:<module>:<revision>
+    ./IvyRepo.sh publish <organisation>:<module>:<revision>
 
 
 Configuration
