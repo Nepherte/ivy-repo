@@ -153,6 +153,11 @@ while [ "$1" != "" ]; do
 done
 
 # Parse commands.
+if [ "$#" == "0" ]; then
+  printError "expected a single command to execute"
+  exit 1
+fi
+
 while [ "$1" != "" ]; do
   case $1 in
     help)
