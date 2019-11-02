@@ -15,14 +15,19 @@ ANT_BIN=
 #   None
 printUsage() {
   echo "Usage: IvyRepo.sh [-h] <command> <artifact>"
-  echo "Script to manage the Nepherte Ivy Repository."
+  echo "Script to manage an Ivy Repository."
   echo
   echo "    -h,--help    Print this help message"
   echo "    <command>    Possible values are resolve, install and publish"
   echo "    <artifact>   The artifact id as organisation:module:revision"
   echo
+  echo "Available commands are:"
   echo
-  echo "Below are a couple of valid usage statements:"
+  echo "    resolve <artifact>  Download and build an artifact"
+  echo "    install <artifact>  Install an artifact into staging"
+  echo "    publish <artifact>  Publish an artifact into production"
+  echo
+  echo "Some usage examples are:"
   echo
   echo "    Example 1"
   echo "    > IvyRepo.sh resolve org.slf4j:slf4j-api:1.7.21"
@@ -34,8 +39,8 @@ printUsage() {
   echo "    > IvyRepo.sh publish org.slf4j:slf4j-api:1.7.21"
   echo
   echo
-  echo "The script looks for Ant in either ANT_HOME or PATH. If needed,"
-  echo "additional options can be passed to Ant by exporting ANT_OPTS."
+  echo "The script looks for Ant in either the ANT_HOME or PATH system variable."
+  echo "Apache Ant. In addition, a Java Runtime Environment must be installed too."
 }
 
 # Prints an error statement.
