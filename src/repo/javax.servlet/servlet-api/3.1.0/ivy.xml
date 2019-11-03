@@ -19,7 +19,7 @@
 
     <!-- The repo to which the module is published. -->
     <repository name="Nepherte Ivy Repo"
-      url="https://ivy.nepherte.be"  artifacts="true" ivys="true"
+      url="https://ivy.nepherte.com"  artifacts="true" ivys="true"
       pattern="[organisation]/[module]/[revision]/ivy.xml" />
 
     <!-- Short description of the module. -->
