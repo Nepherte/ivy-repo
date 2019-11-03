@@ -1,5 +1,5 @@
 **IvyRepo** contains the tool chain to populate the
-[Nepherte Ivy Repository](https://www.nepherte.be/ivy). This includes the
+[Nepherte Ivy Repository](https://ivy.nepherte.com). This includes the
 packaging instructions for all hosted artifacts. Browse this repository for a
 current list of build files. Keep on reading for more info on the tool chain.
 
@@ -43,7 +43,7 @@ environment variable `$ANT_HOME`. Ant in turn depends on the presence of a Java
 Runtime Environment, available under `$JAVA_HOME` or on the system `$PATH`.
 
 The tool chain automatically downloads Ivy and its dependencies. The jars will 
-be available in `$USER_HOME\.ant\lib`. The envirionment variable `$IVY_HOME` 
+be available in `$USER_HOME\.ant\lib`. The environment variable `$IVY_HOME` 
 eventually determines the location in which to cache resolved artifacts.
 
 
