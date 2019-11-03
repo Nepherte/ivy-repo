@@ -14,7 +14,7 @@ ANT_BIN=
 # Params:
 #   None
 printUsage() {
-  echo "Usage: IvyRepo.sh [-h] <command> <artifact>"
+  echo "Usage: IvyRepo.sh [-h] <command> [<artifact>]"
   echo "Script to manage an Ivy Repository."
   echo
   echo "    -h,--help    Print this help message"
@@ -23,9 +23,12 @@ printUsage() {
   echo
   echo "Available commands are:"
   echo
-  echo "    resolve <artifact>  Download and build an artifact"
-  echo "    install <artifact>  Install an artifact into staging"
-  echo "    publish <artifact>  Publish an artifact into production"
+  echo "    resolve     <artifact>  Download and build an artifact"
+  echo "    resolve-all             Download and build all artifacts"
+  echo "    install     <artifact>  Install an artifact into staging"
+  echo "    install-all             Installs all artifacts into staging"
+  echo "    publish     <artifact>  Publish an artifact into production"
+  echo "    publish-all             Publish all artifacts into production"
   echo
   echo "Some usage examples are:"
   echo
@@ -39,8 +42,8 @@ printUsage() {
   echo "    > IvyRepo.sh publish org.slf4j:slf4j-api:1.7.21"
   echo
   echo
-  echo "The script looks for Ant in either the ANT_HOME or PATH system variable."
-  echo "Apache Ant. In addition, a Java Runtime Environment must be installed too."
+  echo "The script looks for Ant in either ANT_HOME or PATH. If needed,"
+  echo "additional options can be passed to Ant by exporting ANT_OPTS."
 }
 
 # Prints an error statement.
@@ -83,7 +86,7 @@ findAntBinary() {
 # Params:
 #   1 - name of the Ant target to execute
 #   2 - artifact as <organisation>:<module>:<revision>
-runAntTargetWithArtifact() {
+runAntTargetOnArtifact() {
   if [ "$#" != "2" ]; then
     printError "command '$1' expects one artifact"
     exit 1
@@ -106,6 +109,24 @@ runAntTargetWithArtifact() {
 
   # Call the Ant target with the required properties.
   properties="$ANT_OPTS -Dorganisation=$organisation -Dmodule=$module -Drevision=$revision"
+  runAntTarget "$target" "$properties"
+}
+
+# Executes an Ant target that operates on all artifact.
+#
+# Globals:
+#   ANT_BIN - path to the Ant executable
+#   BUILD_FILE - path to the Ant buildfile
+#
+# Params:
+#   1 - name of the Ant target to execute
+runAntTargetOnAllArtifacts() {
+  if [ "$#" != "1" ]; then
+    printError "command '$1' expects no artifacts"
+    exit 1
+  fi
+
+  target="$1"; properties=;
   runAntTarget "$target" "$properties"
 }
 
@@ -170,7 +191,11 @@ while [ "$1" != "" ]; do
       exit 0
       ;;
     resolve | install | publish)
-      runAntTargetWithArtifact "$@"
+      runAntTargetOnArtifact "$@"
+      exit 0
+      ;;
+    resolve-all | install-all | publish-all)
+      runAntTargetOnAllArtifacts "$@"
       exit 0
       ;;
     *)

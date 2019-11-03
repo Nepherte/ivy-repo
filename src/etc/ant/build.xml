@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <project
     name="Ivy Repo" default="install" basedir="../../../"
-    xmlns:ivy="antlib:org.apache.ivy.ant">
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns:contrib="antlib:net.sf.antcontrib">
 
   <!-- Build script settings and dependencies -->
   <property file="src/etc/ant/build.properties"/>
@@ -17,6 +18,7 @@
     <!-- Retrieve and download dependencies -->
     <get src="${jcraft-jsch}" dest="${ant.lib.dir}" usetimestamp="true"/>
     <get src="${apache-ivy}" dest="${ant.lib.dir}" usetimestamp="true"/>
+    <get src="${ant-contrib}" dest="${ant.lib.dir}" usetimestamp="true"/>
   </target>
 
   <target name="init" depends="ant">
@@ -64,5 +66,83 @@
     <ivy:install
         from="packager" to="production" organisation="${organisation}"
         module="${module}" revision="${revision}"/>
+  </target>
+
+  <!-- Installs all packages into staging repo -->
+  <target name="resolve-all" depends="init">
+    <pathconvert property="ivy.xml.list" pathsep=":">
+      <map from="${basedir}/${ivy.repo.dir}/" to=""/>
+
+      <fileset dir="${ivy.repo.dir}">
+        <include name="**/ivy.xml"/>
+      </fileset>
+    </pathconvert>
+
+    <contrib:for list="${ivy.xml.list}" delimiter=":" param="ivy.xml">
+      <contrib:sequential>
+        <contrib:propertyregex property="organisation" override="true"
+                               input="@{ivy.xml}" regexp="([\w.-]+)/[\w.-]+/[\w.-]+/ivy.xml" select="\1"/>
+
+        <contrib:propertyregex property="module" override="true"
+                               input="@{ivy.xml}" regexp="[\w.-]+/([\w.-]+)/[\w.-]+/ivy.xml" select="\1"/>
+
+        <contrib:propertyregex property="revision" override="true"
+                               input="@{ivy.xml}" regexp="[\w.-]+/[\w.-]+/([\w.-]+)/ivy.xml" select="\1"/>
+
+        <antcall target="resolve"/>
+      </contrib:sequential>
+    </contrib:for>
+  </target>
+
+  <!-- Installs all packages into staging repo -->
+  <target name="install-all" depends="init">
+    <pathconvert property="ivy.xml.list" pathsep=":">
+      <map from="${basedir}/${ivy.repo.dir}/" to=""/>
+
+      <fileset dir="${ivy.repo.dir}">
+        <include name="**/ivy.xml"/>
+      </fileset>
+    </pathconvert>
+
+    <contrib:for list="${ivy.xml.list}" delimiter=":" param="ivy.xml">
+      <contrib:sequential>
+        <contrib:propertyregex property="organisation" override="true"
+          input="@{ivy.xml}" regexp="([\w.-]+)/[\w.-]+/[\w.-]+/ivy.xml" select="\1"/>
+
+        <contrib:propertyregex property="module" override="true"
+          input="@{ivy.xml}" regexp="[\w.-]+/([\w.-]+)/[\w.-]+/ivy.xml" select="\1"/>
+
+        <contrib:propertyregex property="revision" override="true"
+          input="@{ivy.xml}" regexp="[\w.-]+/[\w.-]+/([\w.-]+)/ivy.xml" select="\1"/>
+
+        <antcall target="install"/>
+      </contrib:sequential>
+    </contrib:for>
+  </target>
+
+  <!--  Installs all packages into production repo -->
+  <target name="publish-all" depends="init">
+    <pathconvert property="ivy.xml.list" pathsep=":">
+      <map from="${basedir}/${ivy.repo.dir}/" to=""/>
+
+      <fileset dir="${ivy.repo.dir}">
+        <include name="**/ivy.xml"/>
+      </fileset>
+    </pathconvert>
+
+    <contrib:for list="${ivy.xml.list}" delimiter=":" param="ivy.xml">
+      <contrib:sequential>
+        <contrib:propertyregex property="organisation" override="true"
+          input="@{ivy.xml}" regexp="([\w.-]+)/[\w.-]+/[\w.-]+/ivy.xml" select="\1"/>
+
+        <contrib:propertyregex property="module" override="true"
+          input="@{ivy.xml}" regexp="[\w.-]+/([\w.-]+)/[\w.-]+/ivy.xml" select="\1"/>
+
+        <contrib:propertyregex property="revision" override="true"
+          input="@{ivy.xml}" regexp="[\w.-]+/[\w.-]+/([\w.-]+)/ivy.xml" select="\1"/>
+
+        <antcall target="publish"/>
+      </contrib:sequential>
+    </contrib:for>
   </target>
 </project>
